@@ -59,6 +59,7 @@ loss_kl = torch.nn.KLDivLoss() #衡量分布
 loss_l1 = torch.nn.L1Loss() #稀疏
 loss_percp = lpips.LPIPS(net='vgg').to(device)
 loss_all=0
+G.eval()
 for epoch in range(10):
 	for i in range(5001):
 		z = torch.randn(64, 128).to(device)
@@ -80,7 +81,7 @@ for epoch in range(10):
 		loss_all +=loss_i.item()
 		print('loss_all__:'+str(loss_all)+'--loss_i:'+str(loss_i.item())+'--loss_1_l2:'+str(loss_1_1.item())+'--loss_1_percp:'+str(loss_1_2.item()))
 		print('loss_z_mean:'+str(loss_2)+'--loss_z_std:'+str(loss_3.item()))
-		if i % 100 == 0: 
+		if i % 100 == 0:
 			img = (torch.cat((x[:8],x_[:8]))+1)/2
 			torchvision.utils.save_image(img, resultPath1_1+'/ep%d_%d.jpg'%(epoch,i), nrow=8)
 			with open(resultPath+'/Loss.txt', 'a+') as f:
