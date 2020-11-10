@@ -156,7 +156,7 @@ class D2E(nn.Module):
     def forward(self, x):
         y = self.net(x)
         #y = y.mean()
-        y = y.view(-1,128)
+        y = y.view(-1,128,1,1)
         return y # [1,1,1,1]
 
 
