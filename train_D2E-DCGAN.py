@@ -65,6 +65,7 @@ for epoch in range(10):
 		with torch.no_grad():
 			z = z.view(64,128,1,1)
 			x = G(z)
+		print(x.shape)
 		z_ = D2(x.detach())
 		#z_ = z_.squeeze(2).squeeze(2)
 		x_ = G(z_)
