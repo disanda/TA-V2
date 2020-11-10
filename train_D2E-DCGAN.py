@@ -62,7 +62,7 @@ loss_all=0
 G.eval()
 for epoch in range(20):
 	for i in range(5001):
-		z = torch.randn(64, 128).to(device)
+		z = torch.randn(32, 128).to(device)
 		with torch.no_grad():
 			z = z.view(64,128,1,1)
 			x = G(z)
