@@ -67,7 +67,7 @@ for epoch in range(10):
 			x = G(z)
 		print(x.shape)
 		z_ = D2(x.detach())
-		#z_ = z_.squeeze(2).squeeze(2)
+		z_ = z_.squeeze(2).squeeze(2)
 		x_ = G(z_)
 		optimizer.zero_grad()
 		loss_1_1 = loss_l2(x,x_)
