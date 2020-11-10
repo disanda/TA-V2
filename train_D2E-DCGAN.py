@@ -60,7 +60,7 @@ loss_l1 = torch.nn.L1Loss() #稀疏
 loss_percp = lpips.LPIPS(net='vgg').to(device)
 loss_all=0
 G.eval()
-for epoch in range(10):
+for epoch in range(20):
 	for i in range(5001):
 		z = torch.randn(64, 128).to(device)
 		with torch.no_grad():
@@ -93,7 +93,7 @@ for epoch in range(10):
 				print('#########################')
 	#if epoch%10==0 or epoch == 29:
 	#torch.save(netG.state_dict(), resultPath1_2+'/G_model_ep%d.pth'%epoch)
-	torch.save(netD2.state_dict(), resultPath1_2+'/D_model_ep%d.pth'%epoch)
+	torch.save(D2.state_dict(), resultPath1_2+'/E_model_ep%d.pth'%epoch)
 
 
 
