@@ -70,10 +70,8 @@ for epoch in range(10):
 		x_ = G(z_)
 		optimizer.zero_grad()
 		loss_1_1 = loss_l2(x,x_)
-		loss_1_2 = loss_percp(x,x_)
-		print(loss_1_1)
-		print(loss_1_2)
-		loss_1 = loss_1_1 + loss_1_2
+		loss_1_2 = loss_percp(x,x_)#[-1,x]
+		loss_1 = loss_1_1 + loss_1_2.mean()
 		loss_2 = loss_l2(z.mean(),z_.mean())
 		loss_3 = loss_l2(z.std(),z_.std()) 
 		loss_i = loss_1+0.01*loss_2+0.01*loss_3
