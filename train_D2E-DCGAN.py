@@ -79,7 +79,7 @@ for epoch in range(10):
 		optimizer.step()
 		loss_all +=loss_i.item()
 		print('loss_all__:'+str(loss_all)+'--loss_i:'+str(loss_i.item())+'--loss_1_l2:'+str(loss_1_1.item())+'--loss_1_percp:'+str(loss_1_2.item()))
-		print('loss_z_mean:'+str(loss_2)+'--loss_z_std:'+str(loss_3.item()))
+		print('loss_z_mean:'+str(loss_2.item())+'--loss_z_std:'+str(loss_3.item()))
 		if i % 100 == 0:
 			img = torch.cat((x[:8],x_[:8]))
 			torchvision.utils.save_image(img, resultPath1_1+'/ep%d_%d.jpg'%(epoch,i), nrow=8)
