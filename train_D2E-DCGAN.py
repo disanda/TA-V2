@@ -36,7 +36,7 @@ G.load_state_dict(torch.load('./premodel/celeba-dcgan/G_ep99_in128_out256_scale1
 D1 = net.Discriminator_SpectrualNorm(input_dim=128, input_channels = 3, image_size=256, scale=8).to(device)
 D1.load_state_dict(torch.load('./premodel/celeba-dcgan/D_ep99_in128_out256_scale8.pth',map_location=device))
 
-D2 = net.D2E(input_dim=128, input_channels = 3, image_size=256, scale=8)
+D2 = net.D2E(input_dim=128, input_channels = 3, image_size=256, scale=8).to(device)
 toggle_grad(D1,False)
 toggle_grad(D2,False)
 
