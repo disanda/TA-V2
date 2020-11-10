@@ -71,6 +71,8 @@ for epoch in range(10):
 		optimizer.zero_grad()
 		loss_1_1 = loss_l2(x,x_)
 		loss_1_2 = loss_percp(x,x_)
+		print(loss_1_1)
+		print(loss_1_2)
 		loss_1 = loss_1_1 + loss_1_2
 		loss_2 = loss_l2(z.mean(),z_.mean())
 		loss_3 = loss_l2(z.std(),z_.std()) 
