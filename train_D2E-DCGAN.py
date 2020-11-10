@@ -86,7 +86,7 @@ for epoch in range(10):
 			torchvision.utils.save_image(img, resultPath1_1+'/ep%d_%d.jpg'%(epoch,i), nrow=8)
 			with open(resultPath+'/Loss.txt', 'a+') as f:
 				print('loss_all__:'+str(loss_all)+'--loss_i:'+str(loss_i.item())+'--loss_1_l2:'+str(loss_1_1.item())+'--loss_1_percp:'+str(loss_1_2.item()),file=f)
-				print('loss_z_mean:'+str(loss_2)+'--loss_z_std:'+str(loss_3.item()),file=f)
+				print('loss_z_mean:'+str(loss_2.item())+'--loss_z_std:'+str(loss_3.item()),file=f)
 			with open(resultPath+'/D_z.txt', 'a+') as f:
 				print(str(epoch)+'-'+str(i)+'-'+'D_z:  '+str(z_[0,0:30])+'     D_z:    '+str(z_[0,30:60]),file=f)
 				print('---------')
