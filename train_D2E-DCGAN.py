@@ -73,7 +73,7 @@ im=image_loader('./cxx.png')
 
 #--------------training with generative image------------share weight: good result!------------step2:no share weight:
 import lpips
-optimizer = torch.optim.Adam(D2.parameters(), lr=0.001 ,betas=(0, 0.99), eps=1e-8)
+optimizer = torch.optim.Adam(E.parameters(), lr=0.001 ,betas=(0, 0.99), eps=1e-8)
 loss_l2 = torch.nn.MSELoss()
 loss_kl = torch.nn.KLDivLoss() #衡量分布
 loss_l1 = torch.nn.L1Loss() #稀疏
