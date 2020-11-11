@@ -57,7 +57,7 @@ FC1 = net.FC_Map()
 FC2 = net.FC_Map()
 FC3 = net.FC_Map()
 import itertools
-fc_optimizer = torch.optim.Adam(itertools.chain(FC1.parameters(), FC2.parameters(),FC3.parameters),lr=0.0001,betas=(0.6, 0.95),amsgrad=True)
+fc_optimizer = torch.optim.Adam(itertools.chain(FC1.parameters(), FC2.parameters(),FC3.parameters()),lr=0.0001,betas=(0.6, 0.95),amsgrad=True)
 
 #-------------load single image---------
 loader = torchvision.transforms.Compose([torchvision.transforms.ToTensor()])
