@@ -43,13 +43,13 @@ def toggle_grad(model, requires_grad):
 # print(dict3.keys())
 
 G = net.Generator(input_dim=128, output_channels = 3, image_size=256, scale=16).to(device)
-G.load_state_dict(torch.load('./premodel/celeba-dcgan/G_ep99_in128_out256_scale16.pth',map_location=device))
+G.load_state_dict(torch.load('/Users/apple/Desktop/preTrained_Model/celeba-dcgan-premodel/G_ep99_in128_out256_scale16.pth',map_location=device))
 
-D = net.Discriminator_SpectrualNorm(input_dim=128, input_channels = 3, image_size=256, scale=8).to(device)
-#print(D)
-D.load_state_dict(torch.load('./premodel/celeba-dcgan/D_ep99_in128_out256_scale8.pth',map_location=device))
+#D = net.Discriminator_SpectrualNorm(input_dim=128, input_channels = 3, image_size=256, scale=8).to(device)
+#D.load_state_dict(torch.load('./premodel/celeba-dcgan/D_ep99_in128_out256_scale8.pth',map_location=device))
 
-
+E = net.D2E(input_dim=128, input_channels = 3, image_size=256, scale=8).to(device)
+E.load_state_dict(torch.load('/Users/apple/Desktop/preTrained_Model/celeba-dcgan-premodel/E_model_ep19.pth',map_location=device))
 
 #--------------操作原 model--------------
 # seed = 0 #默认20
@@ -69,11 +69,6 @@ D.load_state_dict(torch.load('./premodel/celeba-dcgan/D_ep99_in128_out256_scale8
 # 	x = G(z)
 # 	torchvision.utils.save_image(x,'./dim%d-seed%d--gap%d_G_Dim512.png'%(dim,seed,gap), nrow=9)
 # 	print('done')
-
-
-
-
-
 
 
 
@@ -121,25 +116,36 @@ D.load_state_dict(torch.load('./premodel/celeba-dcgan/D_ep99_in128_out256_scale8
 # 	torchvision.utils.save_image(x2,'./infer-img-3/seed-%s-dim%d_-gap%d_D2E.png'%('celeba1558',dim1,gap), nrow=9)
 
 #-------------load single image---------
-# loader = torchvision.transforms.Compose([torchvision.transforms.ToTensor()])
+loader = torchvision.transforms.Compose([torchvision.transforms.ToTensor()])
 
-# from PIL import Image
-# def image_loader(image_name):
-#  image = Image.open(image_name).convert('RGB')
-#  image = image.resize((1024,1024))
-#  image = loader(image).unsqueeze(0)
-#  return image.to(torch.float)
+from PIL import Image
+def image_loader(image_name):
+ image = Image.open(image_name).convert('RGB')
+ image = image.resize((256,256))
+ image = loader(image).unsqueeze(0)
+ return image.to(torch.float)
 
-# im1=image_loader('./real-img/yc-3.jpg')
+im1=image_loader('/Users/apple/Desktop/real-image/wwm.png')
 
-# print(im1.mean())
-# print(im1.std())
+print(im1.mean())
+print(im1.std())
 
-# im1 = im1*2-1 
+im2 = im1*2-1 
 
-# print(im1.mean())
-# print(im1.std())
+print(im2.mean())
+print(im2.std())
 
+with torch.no_grad():
+	G.eval()
+	#z = torch.randn(10,128,1,1)
+	#im1 = G(z)
+	z_ = E(im1)
+	x = G(z_)
+	print(x.shape)
+	print(im1.shape)
+	img = torch.cat((im1,x))
+	torchvision.utils.save_image(img,'./id%s.png'%(str('cxx')), nrow=2)
+	print('done')
 
 # seed =0 #默认20
 # set_seed(seed)

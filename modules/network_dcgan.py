@@ -159,5 +159,17 @@ class D2E(nn.Module):
         y = y.view(-1,128,1,1)
         return y # [1,1,1,1]
 
-
+class FC_Map(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc = nn.Sequential(
+            nn.Linear(128,128),
+            nn.LeakyReLU(0.2),
+            nn.Linear(128,128),
+        )
+    def forward(self, x):
+        x = x.view(-1,128)
+        y = self.fc(x)
+        y = y.view(-1,128,1,1)
+        return y
 
