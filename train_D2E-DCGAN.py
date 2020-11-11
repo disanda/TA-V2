@@ -88,9 +88,9 @@ for epoch in range(20):
 		with torch.no_grad():
 			x = G(z)
 		z_ = E(x.detach())
-		z_1 = FC(z_)
-		z_2 = FC(z_)
-		z_3 = FC(z_)
+		z_1 = FC1(z_)
+		z_2 = FC2(z_)
+		z_3 = FC3(z_)
 		z__ = z_1*z_2*z_3
 		x_ = G(z__)
 		optimizer.zero_grad()
