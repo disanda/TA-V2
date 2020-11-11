@@ -69,7 +69,7 @@ def image_loader(image_name):
  image = loader(image).unsqueeze(0)
  return image.to(torch.float)
 
-im=image_loader('./cxx.png')
+im=image_loader('./cxx.png').to(device)
 
 #--------------training with generative image------------share weight: good result!------------step2:no share weight:
 import lpips
