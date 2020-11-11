@@ -53,11 +53,11 @@ G.load_state_dict(torch.load('./premodel/celeba-dcgan/G_ep99_in128_out256_scale1
 E = net.D2E(input_dim=128, input_channels = 3, image_size=256, scale=8).to(device)
 E.load_state_dict(torch.load('/_yucheng/TA-V2/result/DCGAN-Celeba-V1-Percp-MSE/models/E_model_ep19.pth',map_location=device))
 
-FC1 = net.FC_Map().to(device)
-FC2 = net.FC_Map().to(device)
-FC3 = net.FC_Map().to(device)
-import itertools
-fc_optimizer = torch.optim.Adam(itertools.chain(FC1.parameters(), FC2.parameters(),FC3.parameters()),lr=0.0001,betas=(0.6, 0.95),amsgrad=True)
+# FC1 = net.FC_Map().to(device)
+# FC2 = net.FC_Map().to(device)
+# FC3 = net.FC_Map().to(device)
+# import itertools
+# fc_optimizer = torch.optim.Adam(itertools.chain(FC1.parameters(), FC2.parameters(),FC3.parameters()),lr=0.0001,betas=(0.6, 0.95),amsgrad=True)
 
 #-------------load single image---------
 loader = torchvision.transforms.Compose([torchvision.transforms.ToTensor()])
@@ -70,7 +70,6 @@ def image_loader(image_name):
  return image.to(torch.float)
 
 im=image_loader('./cxx.png').to(device)
-x = im
 
 #--------------training with generative image------------share weight: good result!------------step2:no share weight:
 import lpips
@@ -83,25 +82,22 @@ loss_all=0
 G.eval()
 for epoch in range(20):
 	for i in range(5001):
-		#z = torch.randn(32, 128).to(device)
-		#z = z.view(-1,128,1,1)
-		z_ = E(x)
-		# with torch.no_grad():
-		# 	x = G(z_)
-		#z_ = E(x.detach())
-		z_1 = FC1(z_)
-		z_2 = FC2(z_)
-		z_3 = FC3(z_)
-		z__ = z_1*z_2*z_3
+		z = torch.randn(63, 128).to(device)
+		z = z.view(-1,128,1,1)
+		z2 = E(im)
+		z2 = z.view(1,128,1,1)
+		z = torch.cat((z2,z))
 		with torch.no_grad():
-			x_ = G(z__)
+			x = G(z)
+		z_ = E(x.detach())
+		with torch.no_grad():
+			x_ = G(z_)
 		optimizer.zero_grad()
-		fc_optimizer.zero_grad()
 		loss_1_1 = loss_l2(x,x_)
 		loss_1_2 = loss_percp(x,x_).mean()#[-1,x] -> x
 		loss_1 = loss_1_1 + loss_1_2
-		loss_2 = loss_l2(z_.mean(),torch.tensor(0.).to(device))
-		loss_3 = loss_l2(z_.std(),torch.tensor(1.).to(device)) 
+		loss_2 = loss_l2(z_.mean(),z.mean())
+		loss_3 = loss_l2(z_.std(),z.std()) 
 		loss_i = loss_1+0.01*loss_2+0.01*loss_3
 		loss_i.backward()
 		optimizer.step()
@@ -110,9 +106,9 @@ for epoch in range(20):
 		print('loss_all__:'+str(loss_all)+'--loss_i:'+str(loss_i.item())+'--loss_1_l2:'+str(loss_1_1.item())+'--loss_1_percp:'+str(loss_1_2.item()))
 		print('loss_z_mean:'+str(loss_2.item())+'--loss_z_std:'+str(loss_3.item()))
 		if i % 100 == 0:
-			#img = torch.cat((x[:8],x_[:8]))
-			img = torch.cat((x,x_))
-			torchvision.utils.save_image(img, resultPath1_1+'/ep%d_%d.jpg'%(epoch,i), nrow=2)
+			img = torch.cat((x[:8],x_[:8]))
+			#img = torch.cat((x,x_))
+			torchvision.utils.save_image(img, resultPath1_1+'/ep%d_%d.jpg'%(epoch,i), nrow=8)
 			with open(resultPath+'/Loss.txt', 'a+') as f:
 				print('loss_all__:'+str(loss_all)+'--loss_i:'+str(loss_i.item())+'--loss_1_l2:'+str(loss_1_1.item())+'--loss_1_percp:'+str(loss_1_2.item()),file=f)
 				print('loss_z_mean:'+str(loss_2.item())+'--loss_z_std:'+str(loss_3.item()),file=f)
@@ -121,18 +117,18 @@ for epoch in range(20):
 				print('---------')
 				print(str(epoch)+'-'+str(i)+'-'+'D_z_mean:  '+str(z_.mean())+'     D_z_std:    '+str(z_.std()),file=f)
 				print('#########################')
-			with open(resultPath+'/fc_z.txt', 'a+') as f:
-				print(str(epoch)+'-'+str(i)+'-'+'fc_z1:  '+str(z_1[0,0:60].view(60)),file=f)
-				print('---------')
-				print(str(epoch)+'-'+str(i)+'-'+'fc_z2:  '+str(z_2[0,0:60].view(60)),file=f)
-				print('---------')
-				print(str(epoch)+'-'+str(i)+'-'+'fc_z3:  '+str(z_2[0,0:60].view(60)),file=f)
-				print('---------')
-				print(str(epoch)+'-'+str(i)+'-'+'fc_z:  '+str(z__[0,0:60].view(60)),file=f)
-				print('#########################')
+			# with open(resultPath+'/fc_z.txt', 'a+') as f:
+			# 	print(str(epoch)+'-'+str(i)+'-'+'fc_z1:  '+str(z_1[0,0:60].view(60)),file=f)
+			# 	print('---------')
+			# 	print(str(epoch)+'-'+str(i)+'-'+'fc_z2:  '+str(z_2[0,0:60].view(60)),file=f)
+			# 	print('---------')
+			# 	print(str(epoch)+'-'+str(i)+'-'+'fc_z3:  '+str(z_2[0,0:60].view(60)),file=f)
+			# 	print('---------')
+			# 	print(str(epoch)+'-'+str(i)+'-'+'fc_z:  '+str(z__[0,0:60].view(60)),file=f)
+			# 	print('#########################')
 	#if epoch%10==0 or epoch == 29:
 	#torch.save(netG.state_dict(), resultPath1_2+'/G_model_ep%d.pth'%epoch)
-	torch.save(D2.state_dict(), resultPath1_2+'/E_model_ep%d.pth'%epoch)
+	torch.save(E.state_dict(), resultPath1_2+'/E_model_ep%d.pth'%epoch)
 
 
 
