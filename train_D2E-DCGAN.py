@@ -101,7 +101,6 @@ for epoch in range(20):
 		loss_i = loss_1+0.01*loss_2+0.01*loss_3
 		loss_i.backward()
 		optimizer.step()
-		fc_optimizer.step()
 		loss_all +=loss_i.item()
 		print('loss_all__:'+str(loss_all)+'--loss_i:'+str(loss_i.item())+'--loss_1_l2:'+str(loss_1_1.item())+'--loss_1_percp:'+str(loss_1_2.item()))
 		print('loss_z_mean:'+str(loss_2.item())+'--loss_z_std:'+str(loss_3.item()))
