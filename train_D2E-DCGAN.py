@@ -70,6 +70,7 @@ def image_loader(image_name):
  return image.to(torch.float)
 
 im=image_loader('./cxx.png').to(device)
+x = im
 
 #--------------training with generative image------------share weight: good result!------------step2:no share weight:
 import lpips
@@ -84,15 +85,16 @@ for epoch in range(20):
 	for i in range(5001):
 		#z = torch.randn(32, 128).to(device)
 		#z = z.view(-1,128,1,1)
-		z = E(im)
-		with torch.no_grad():
-			x = G(z)
-		z_ = E(x.detach())
+		z_ = E(x)
+		# with torch.no_grad():
+		# 	x = G(z_)
+		#z_ = E(x.detach())
 		z_1 = FC1(z_)
 		z_2 = FC2(z_)
 		z_3 = FC3(z_)
 		z__ = z_1*z_2*z_3
-		x_ = G(z__)
+		with torch.no_grad():
+			x_ = G(z__)
 		optimizer.zero_grad()
 		fc_optimizer.zero_grad()
 		loss_1_1 = loss_l2(x,x_)
