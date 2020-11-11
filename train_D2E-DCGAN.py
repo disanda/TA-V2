@@ -85,7 +85,7 @@ for epoch in range(20):
 		z = torch.randn(63, 128).to(device)
 		z = z.view(-1,128,1,1)
 		z2 = E(im)
-		z2 = z.view(1,128,1,1)
+		z2 = z2.view(1,128,1,1)
 		z = torch.cat((z2,z))
 		with torch.no_grad():
 			x = G(z)
