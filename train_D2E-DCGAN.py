@@ -53,9 +53,9 @@ G.load_state_dict(torch.load('./premodel/celeba-dcgan/G_ep99_in128_out256_scale1
 E = net.D2E(input_dim=128, input_channels = 3, image_size=256, scale=8).to(device)
 E.load_state_dict(torch.load('/_yucheng/TA-V2/result/DCGAN-Celeba-V1-Percp-MSE/models/E_model_ep19.pth',map_location=device))
 
-FC1 = net.FC_Map()
-FC2 = net.FC_Map()
-FC3 = net.FC_Map()
+FC1 = net.FC_Map().to(device)
+FC2 = net.FC_Map().to(device)
+FC3 = net.FC_Map().to(device)
 import itertools
 fc_optimizer = torch.optim.Adam(itertools.chain(FC1.parameters(), FC2.parameters(),FC3.parameters()),lr=0.0001,betas=(0.6, 0.95),amsgrad=True)
 
