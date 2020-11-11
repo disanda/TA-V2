@@ -120,13 +120,13 @@ for epoch in range(20):
 				print(str(epoch)+'-'+str(i)+'-'+'D_z_mean:  '+str(z_.mean())+'     D_z_std:    '+str(z_.std()),file=f)
 				print('#########################')
 			with open(resultPath+'/fc_z.txt', 'a+') as f:
-				print(str(epoch)+'-'+str(i)+'-'+'fc_z1:  '+str(z_1[0,0:60].view(30)),file=f)
+				print(str(epoch)+'-'+str(i)+'-'+'fc_z1:  '+str(z_1[0,0:60].view(60)),file=f)
 				print('---------')
-				print(str(epoch)+'-'+str(i)+'-'+'fc_z2:  '+str(z_2[0,0:60].view(30)),file=f)
+				print(str(epoch)+'-'+str(i)+'-'+'fc_z2:  '+str(z_2[0,0:60].view(60)),file=f)
 				print('---------')
-				print(str(epoch)+'-'+str(i)+'-'+'fc_z3:  '+str(z_2[0,0:60].view(30)),file=f)
+				print(str(epoch)+'-'+str(i)+'-'+'fc_z3:  '+str(z_2[0,0:60].view(60)),file=f)
 				print('---------')
-				print(str(epoch)+'-'+str(i)+'-'+'fc_z:  '+str(z__[0,0:60].view(30)),file=f)
+				print(str(epoch)+'-'+str(i)+'-'+'fc_z:  '+str(z__[0,0:60].view(60)),file=f)
 				print('#########################')
 	#if epoch%10==0 or epoch == 29:
 	#torch.save(netG.state_dict(), resultPath1_2+'/G_model_ep%d.pth'%epoch)
