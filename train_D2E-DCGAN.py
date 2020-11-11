@@ -100,8 +100,8 @@ for epoch in range(20):
 		loss_1_1 = loss_l2(x,x_)
 		loss_1_2 = loss_percp(x,x_).mean()#[-1,x] -> x
 		loss_1 = loss_1_1 + loss_1_2
-		loss_2 = loss_l2(z.mean(),0)
-		loss_3 = loss_l2(z.std(),1) 
+		loss_2 = loss_l2(z_.mean(),0)
+		loss_3 = loss_l2(z_.std(),1) 
 		loss_i = loss_1+0.01*loss_2+0.01*loss_3
 		loss_i.backward()
 		optimizer.step()
