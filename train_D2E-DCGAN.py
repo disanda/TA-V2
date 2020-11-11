@@ -84,11 +84,12 @@ for epoch in range(20):
 	for i in range(5001):
 		z = torch.randn(63, 128).to(device)
 		z = z.view(-1,128,1,1)
+		with torch.no_grad():
+			x = G(z)
 		z2 = E(im)
 		z2 = z2.view(1,128,1,1)
 		z = torch.cat((z2,z))
-		with torch.no_grad():
-			x = G(z)
+		x = torch.cat((im,x))
 		z_ = E(x.detach())
 		with torch.no_grad():
 			x_ = G(z_)
